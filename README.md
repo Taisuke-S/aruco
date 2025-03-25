@@ -29,33 +29,29 @@ eSPDI_DM.dll                   aeroTAP 3D USB Camera low level Library
 
 ZDColorPalette.py              aerotap.py　Supplementary: A library for generating color lookup for depth maps in Python.
 
-Algorithm - detectMarker_aeroSVD.py
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# From the 2D marker corner coordinates obtained using cv2.aruco.estimatePoseSingleMarkers(),
-# compute the 3D camera world coordinates and derive the transformation matrix from the 3D corner coordinates using SVD.
-# Set standard marker coordinates as a reference and compute the transformation matrix 
-# that relates them to the measured marker coordinates.
-# If 3D coordinates cannot be obtained (i.e., corner distance coordinates cannot be retrieved or distance = 0), ignore them.
-#
-# Important: Since the depth data obtained from the 3D camera has fluctuations,
-# a moving average is applied to smooth the values.
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Algorithm - detectMarker_aeroSVD.py
+ From the 2D marker corner coordinates obtained using cv2.aruco.estimatePoseSingleMarkers(),
+ compute the 3D camera world coordinates and derive the transformation matrix from the 3D corner coordinates using SVD.
+ Set standard marker coordinates as a reference and compute the transformation matrix 
+ that relates them to the measured marker coordinates.
+ If 3D coordinates cannot be obtained (i.e., corner distance coordinates cannot be retrieved or distance = 0), ignore them.
+
+ Important: Since the depth data obtained from the 3D camera has fluctuations,
+ a moving average is applied to smooth the values.
 
 
 # Algorithm - detectMarker_aerotap3D.py
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# From the 2D marker corner coordinates obtained using cv2.aruco.estimatePoseSingleMarkers(),
-# compute the 3D camera world coordinates and derive the transformation matrix from the 3D corner coordinates.
-# If 3D coordinates cannot be obtained (i.e., corner distance coordinates cannot be retrieved or distance = 0), ignore them.
-#
-# Determine the z-axis using the normal vector (cross product).
-# Define the x-axis using the vector between the first and second points.
-# Compute the y-axis using the cross product.
-#
-# Important: Since the depth data obtained from the 3D camera has fluctuations,
-# a moving average is applied to smooth the values.
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ From the 2D marker corner coordinates obtained using cv2.aruco.estimatePoseSingleMarkers(),
+ compute the 3D camera world coordinates and derive the transformation matrix from the 3D corner coordinates.
+ If 3D coordinates cannot be obtained (i.e., corner distance coordinates cannot be retrieved or distance = 0), ignore them.
+
+ Determine the z-axis using the normal vector (cross product).
+ Define the x-axis using the vector between the first and second points.
+ Compute the y-axis using the cross product.
+
+ Important: Since the depth data obtained from the 3D camera has fluctuations,
+ a moving average is applied to smooth the values.
 
 # Operation Method  
-# Press the 'v' key to switch ViewMode:  
-# Toggle between estimation using Aruco and estimation using 3D coordinates.  
+ Press the 'v' key to switch ViewMode:  
+      Toggle between estimation using Aruco and estimation using 3D coordinates.  
