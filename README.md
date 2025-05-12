@@ -1,17 +1,39 @@
-# aruco
+# aruco2
  aruco for aeroTAP
 
 #
 #__author__ = "nextEDGE Technology"
 #__copyright__ = "Copyright (C) 2025 nextEDGE Technology K.K."
 #__license__ = "Public Domain"
-#__version__ = "1.4"
+#__version__ = "2.0"
 #
-# last updated:2025-03-25
+# last updated:2025-05-12
+
+# Changes
+1. Defined a Marker class to manage multiple (2) ArUco markers, allowing each marker to store its own pose matrix.
+2. Calculated the relative pose matrix between pose matrices managed per marker, and displayed roll, pitch, and yaw (in degrees).
+3. Enabled the Marker class to handle the display of information for each marker.
+4. Implemented CLAHE as a preprocessing step to improve marker detection accuracy and robustness.
+5. Added a display mode toggle with the 's' key to show/hide marker-specific information.
+6. Enabled switching between relative poses from Marker ID 1 and Marker ID 2 using the 'r' key.
+7. maker.py generates ArUco marker IDs 0 and 1.
+8. Updated aeroTAP_CAM.dll:
+   Now supports saving and loading the FocalLength value directly within the camera.
+   Previously, a default standard FocalLength value was used, but now it can be set and handled as a camera-specific value.
+   As a result, more accurate 3D data (X, Y coordinate values) can be obtained
 
 # Prerequisites
+1. Run VSCode
+2. python -m venv aruco
+3. Choose Command Palette -> Select Python interpreter -> venv aruco
+
 pip install opencv-python opencv-contrib-python numpy
 pip install --upgrade scipy
+
+>>> print(np.__version__) 
+1.24.1pi
+>>> print(scipy.__version__)
+1.15.2
 
 # Samples
 aerotap.py                     aeroTAP SDK for python wrapper
@@ -21,7 +43,8 @@ detectMarker_aeroSVD.py        A sample for obtaining the marker transformation 
 　　　　　　　　　　　　　　　　　*stable ?
 detectMarker_aerotap3D.py      A sample for converting the four ArUco corners to 3D and obtaining the marker transformation matrix.
 marker.py                      Marker output script
-aruco_marker.png               Marker file
+aruco_marker0.png              Marker ID 0 file
+aruco_marker1.png              Marker ID 1 file
 
 aeroTAP_CAM.dll                aeroTAP SDK Library DLL
 aeroTAP_CAMMP.dll              aeroTAP SDK Library DLL OpenMP enabled
@@ -55,3 +78,15 @@ ZDColorPalette.py              aerotap.py　Supplementary: A library for generat
 # Operation Method  
  Press the 'v' key to switch ViewMode:  
       Toggle between estimation using Aruco and estimation using 3D coordinates.  
+ Press the 's' key to switch Hide/Show detected Marker Information
+ Press the 'w' key to calc Invert deformation matrix from Maker or camera
+ Press the 'r' key to calc Relative from Maker 0 , Maker 1, or no relative 
+
+# Output
+  transform from camera center x,y,z ( mm )
+  euler_angles roll, pitch , yaw (degree)
+
+# History
+1.6  Modified view data
+     Showing transforn 3D and euler_angles (roll, pitch, yaw) 
+2.0  Modified to support multiple markers 

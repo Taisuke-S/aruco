@@ -627,7 +627,7 @@ nPType =-1 # Product Type
 # Enble/Distable HW PostProcess only for aeroTAP 3D USB G2 camera
 bEnableHWPostProcess = True
 # Enble/Distable Simple Depth Poast Process
-bEnableDepthFilter = True
+bEnableDepthFilter = False
 # Enble MJPEG streaming for Color Image. Only for USB2.0 mode
 bEnableMJPEG = False
 # zdTable is required for 8bit/11bit depth map
@@ -727,7 +727,7 @@ if __name__ == "__main__":
           break;
       time.sleep(1)
 # Loop Start          
-   for i in range(200):
+   while(1):
       if IsNewFrame():
 
            img = Read(nColorImage)   # Color Image

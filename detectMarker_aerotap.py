@@ -62,7 +62,7 @@ while True:
             cv2.putText(frame, f"ID: {marker_id}", (x, y - 10),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
-            cv2.putText(frame, f"{x},{y}", (10, 10),
+            cv2.putText(frame, f"#{i}: {x},{y}", (10, 10+i*20),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
     # 結果を表示
     cv2.imshow("Aruco Marker Detection", frame)
