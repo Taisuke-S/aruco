@@ -2934,3 +2934,650 @@ AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
 AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
 CaptureCallback() cam 0 IsImageColor
 CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+InitAeroCam() EtronDI_GetSerialNumber() retry 1 ret = -6
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+AERO_StartCam() EtronDI_OpenDevice - ret -23 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret -23 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret -23 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 9 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+AERO_StartCam() EtronDI_OpenDevice - ret -23 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret -23 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret -23 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret -23 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+InitAeroCam() EtronDI_GetSerialNumber() retry 1 ret = -6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+InitAeroCam() EtronDI_GetSerialNumber() retry 1 ret = -6
+InitAeroCam() EtronDI_GetSerialNumber() retry 2 ret = -6
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = -6
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+InitAeroCam() EtronDI_GetSerialNumber() retry 1 ret = -6
+InitAeroCam() EtronDI_GetSerialNumber() retry 2 ret = -6
+InitAeroCam() EtronDI_GetSerialNumber() retry 3 ret = -6
+AERO_StartCam() EtronDI_OpenDevice - ret -23 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret -23 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+InitAeroCam() EtronDI_GetFwVersion() len  = 6
+InitAeroCam() EtronDI_GetSerialNumber() ret = 0
+AERO_StartCam() EtronDI_OpenDevice - ret 0 bInterleave 0
+AERO_StartCam() OpenDevice FPS 30 Color idx 4 Depth idx 1
+CaptureCallback() cam 0 IsImageColor
+CaptureCallback() cam 0 IsImageDepth
+CaptureCallback() cam 0 IsImageDepth

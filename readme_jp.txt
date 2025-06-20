@@ -36,6 +36,8 @@ detectMarker_aerotap.py        aeroTAP 3D USBカメラを使ったarucoサンプ
 detectMarker_aeroSVD.py        arucoの代わりにマーカー4コーナー(x,y,z)と基準4コーナー点の関係をSVDで変換行列を求めるサンプル
 　　　　　　　　　　　　　　　　　こちらの方が安定している?
 detectMarker_aerotap3D.py      arucoの4コーナーを3D化し、マーカー変換行列を求めるサンプル
+detectMarker_aerotapDEBUG.py   DEBUG 版は、RAWデータを./RAWフォルダーに保存します
+detectMarker_aerotap3DDEBUG.py DEBUG 版は、カメラの代わりにRAWフォルダーからのデータを処理します。
 
 marker.py                      マーカー画像出力プログラム id 0,  id 1
 aruco_marker0.png              マーカー id 0 画像データ
@@ -84,3 +86,13 @@ ZDColorPalette.py              aerotap.py　補足py depthmapのカラーLookup�
   transform 中央からの位置 x,y,z ( mm )
   euler_angles roll, pitch , yaw (degree)
 
+# History
+1.6  Modified view data
+     Showing transforn 3D and euler_angles (roll, pitch, yaw) 
+2.0  Modified to support multiple markers 
+2.2  Added DEBUG samples to confirm Marker depth is detected correctly
+     detectMarker_aerotapDEBUG.py  
+     detectMarker_aerotap3DDEBUG.py
+     added drawreMarkerRect() to draw marker rect in Depth Map image
+2.4  マーカーのDepth計算を移動平均で求めていたが、マーカー毎の移動平均ではなく、2つのマーカーの移動平均になっていた問題
+     マーカー間の平行移動(Translation)の表示

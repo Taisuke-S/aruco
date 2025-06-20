@@ -5,7 +5,7 @@
 #__author__ = "nextEDGE Technology"
 #__copyright__ = "Copyright (C) 2025 nextEDGE Technology K.K."
 #__license__ = "Public Domain"
-#__version__ = "2.0"
+#__version__ = "2.4"
 #
 # last updated:2025-05-12
 
@@ -42,6 +42,9 @@ detectMarker_aerotap.py        aruco sample with using aeroTAP 3D USB Camera
 detectMarker_aeroSVD.py        A sample for obtaining the marker transformation matrix using SVD from four corners instead of Aruco
 　　　　　　　　　　　　　　　　　*stable ?
 detectMarker_aerotap3D.py      A sample for converting the four ArUco corners to 3D and obtaining the marker transformation matrix.
+detectMarker_aerotapDEBUG.py   DEBUG version will save RAW data to ./RAW folder
+detectMarker_aerotap3DDEBUG.py DEBUG version will load from RAW data and process aruco marker
+
 marker.py                      Marker output script
 aruco_marker0.png              Marker ID 0 file
 aruco_marker1.png              Marker ID 1 file
@@ -90,3 +93,9 @@ ZDColorPalette.py              aerotap.py　Supplementary: A library for generat
 1.6  Modified view data
      Showing transforn 3D and euler_angles (roll, pitch, yaw) 
 2.0  Modified to support multiple markers 
+2.2  Added DEBUG samples to confirm Marker depth is detected correctly
+     detectMarker_aerotapDEBUG.py  
+     detectMarker_aerotap3DDEBUG.py
+     added drawreMarkerRect() to draw marker rect in Depth Map image
+2.4  fixed issue with getDepthAve calculating incorrect depth average
+     added to show transaltion between markers

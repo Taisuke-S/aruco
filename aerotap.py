@@ -617,8 +617,8 @@ BMlen = 40 #sys.getsizeof(BITMAPINFOHEADER())
 camID =0 # caera ID 0 to 3
 camMode = 10 # 8bit Depth
 camFPS =30
-camWidth=640
-camHeight = 480
+camWidth=1280
+camHeight = 720
 nColorImage = 0 # 1:Color image 24bit bgr , 1: Grayscale 1bit
 nIsUSB30 =0 # 0: follow current connection mode
 

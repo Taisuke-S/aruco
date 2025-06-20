@@ -6,6 +6,30 @@ import aerotap
 aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_50)
 aruco_params = cv2.aruco.DetectorParameters()
 
+def drawreMarkerRect(image,corners,ids):
+# 線の色と太さの指定
+    print("drawreMarkerRect called")
+    line_color = (255, 255, 255)  # 赤 (BGR0形式)
+    line_thickness = 4
+    if corners is None or len(corners) == 0:
+        print("No corners detected")
+        return
+# 各マーカーに対して枠を描画
+    for i, corner in enumerate(corners):
+        pts = corner[0].astype(int)  # 4点の座標 [4, 2]
+        cv2.polylines(image, [pts], isClosed=True, color=line_color, thickness=line_thickness)
+        print(pts)
+
+    # オプション：マーカーIDを表示
+        if ids is not None:
+            center = np.mean(pts, axis=0).astype(int)
+            cv2.putText(image, f"ID {ids[i][0]}", tuple(center), cv2.FONT_HERSHEY_SIMPLEX,
+                0.5, (0, 0, 255), 2, cv2.LINE_AA)
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# メイン処理
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
 # カメラを起動
 #cap = cv2.VideoCapture(0)
 if not aerotap.getCamModeAndType():
@@ -15,7 +39,7 @@ if not aerotap.Init(0,30,aerotap.camMode):
      raise ValueError("Error aeroInit")
    
 #aerotap.EnableDepthFilter(bEnableDepthFilter)
-if not aerotap.StartCam(640,480):
+if not aerotap.StartCam(1280,720):
      raise ValueError("Camera Start Error")
 
 print("Starting camera...type 'Esc' to terminate.")      
@@ -28,11 +52,15 @@ dist_coeffs = np.zeros((4, 1))  # 歪み係数（例）
 while True:
   if aerotap.IsNewFrame():
     frame = aerotap.Read(0)
+    depth = aerotap.ReadDepth()  # depth map 16 bit
 #          depth = ReadDepth()
     aerotap.UpdateFrame()
 
     # グレースケールに変換
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    if( not (depth is None) ):
+       # convert depth map to bgr ColorImage
+       imgDepth = aerotap.DepthToRGB(depth)
 
     # マーカーを検出
     detector = cv2.aruco.ArucoDetector(aruco_dict, aruco_params)
@@ -43,6 +71,8 @@ while True:
         
         marker_size = 0.05  # 5cmのマーカーと仮定
         rvecs, tvecs, _ = cv2.aruco.estimatePoseSingleMarkers(corners, marker_size, camera_matrix, dist_coeffs)
+
+        drawreMarkerRect(imgDepth,corners,ids)
 
         cv2.aruco.drawDetectedMarkers(frame, corners, ids)
         for i, rvec in enumerate(rvecs):
@@ -66,6 +96,9 @@ while True:
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
     # 結果を表示
     cv2.imshow("Aruco Marker Detection", frame)
+
+    if( not (depth is None) ):
+       cv2.imshow( "aeroTAP camera DepthMap", imgDepth )
 
     # ESCキーで終了
     if cv2.waitKey(1) & 0xFF == 27:

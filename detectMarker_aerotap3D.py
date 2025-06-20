@@ -23,31 +23,32 @@ from scipy.spatial.transform import Rotation
 class DepthMovingAverage:
     def __init__(self, window_size):
         self.window_size = window_size
-        self.values = deque(maxlen=window_size)  # 最大長を設定
-        self.total = 0  # 合計値を保持（計算を高速化）
+        self.values = deque()
+        self.total = 0.0
 
     def update(self, value):
-        if len(self.values) == self.window_size:  
-            self.total -= self.values[0]  # 古い値を減算
+        if len(self.values) >= self.window_size:
+            oldest = self.values.popleft()
+            self.total -= oldest
         self.values.append(value)
-        self.total += value  # 新しい値を加算
-    
+        self.total += value
+
     def get_average(self):
         if not self.values:
-            return None  # データがない場合は None
+            return 0.0  # Noneより0.0のほうが扱いやすい場合が多い
         return self.total / len(self.values)
 
 # マーカーコーナーの各距離を移動平均から得る
-def getDepthAve(corners,depth):
-   global nDepthSum,nDepthCount,depthMoving_averages
+def getDepthAve(no,corners,depth):
+   global depthMoving_averages
 
-   nDepthAve = np.array([0,0,0,0])
+   nDepthAve = np.zeros(4, dtype=np.float32)
    nDepth = getDepth(corners,depth)
 
    for i in range(depthMoving_averages):
        if nDepth[i]>0:
-           depthMovingAverages[i].update(nDepth[i])
-           nDepthAve[i] = depthMovingAverages[i].get_average()
+           depthMovingAverages[no][i].update(nDepth[i])
+           nDepthAve[i] = depthMovingAverages[no][i].get_average()
 
 #   print(f"nDepth {nDepthAve[0]:.0f}, {nDepthAve[1]:.0f}, {nDepthAve[2]:.0f}, {nDepthAve[3]:.0f}")
    return nDepthAve
@@ -172,6 +173,26 @@ def calcEulerAngle(T3D):
     euler_angles = r.as_euler('zyx', degrees=True)
     return euler_angles
 
+def drawreMarkerRect(image,corners,ids):
+# 線の色と太さの指定
+#    print("drawreMarkerRect called")
+    line_color = (255, 255, 255)  # 赤 (BGR0形式)
+    line_thickness = 4
+    if corners is None or len(corners) == 0:
+        print("No corners detected")
+        return
+# 各マーカーに対して枠を描画
+    for i, corner in enumerate(corners):
+        pts = corner[0].astype(int)  # 4点の座標 [4, 2]
+        cv2.polylines(image, [pts], isClosed=True, color=line_color, thickness=line_thickness)
+#        print(pts)
+
+    # オプション：マーカーIDを表示
+        if ids is not None:
+            center = np.mean(pts, axis=0).astype(int)
+            cv2.putText(image, f"ID {ids[i][0]}", tuple(center), cv2.FONT_HERSHEY_SIMPLEX,
+                0.5, (0, 0, 255), 2, cv2.LINE_AA)
+
 # マーカーclass
 class Marker:
 
@@ -227,7 +248,7 @@ class Marker:
         # corners[0] の 4 点の座標 (2D)
         self.marker_corners_2D = corners[i].reshape(4, 2)  # (4,2) の形に変換
         # corners[0] の 4 点の距離(Z)
-        self.cornerDepth = getDepthAve(self.marker_corners_2D,depth)
+        self.cornerDepth = getDepthAve(i,self.marker_corners_2D,depth)
         # 距離が取得出来ていない場合
         if np.any(self.cornerDepth <= 0):
             return False, None, None
@@ -330,12 +351,32 @@ class Marker:
         # マーカー位置に相対座標系を描画
         cv2.drawFrameAxes(frame, camera_matrix, dist_coeffs, rvec, self.tvec2D, 0.03)
 
+def drawreMarkerRect(image,corners,ids):
+# 線の色と太さの指定
+    print("drawreMarkerRect called")
+    line_color = (255, 255, 255)  # 赤 (BGR0形式)
+    line_thickness = 4
+    if corners is None or len(corners) == 0:
+        print("No corners detected")
+        return
+# 各マーカーに対して枠を描画
+    for i, corner in enumerate(corners):
+        pts = corner[0].astype(int)  # 4点の座標 [4, 2]
+        cv2.polylines(image, [pts], isClosed=True, color=line_color, thickness=line_thickness)
+        print(pts)
+
+    # オプション：マーカーIDを表示
+        if ids is not None:
+            center = np.mean(pts, axis=0).astype(int)
+            cv2.putText(image, f"ID {ids[i][0]}", tuple(center), cv2.FONT_HERSHEY_SIMPLEX,
+                0.5, (0, 0, 255), 2, cv2.LINE_AA)
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # メイン処理
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-cameraWidth = 640
-cameraHeight = 480
+cameraWidth = 1280
+cameraHeight = 720
 # カメラ内部を90として、30FPSで処理するには  nFPS = 190 とする
 nFPS = 30
 # ArUcoマーカーの辞書を定義 (DICT_4X4_50 など他の辞書も使用可)
@@ -391,7 +432,10 @@ base_3D_corners = np.array([
 # === 4つのDepth移動平均を管理 ===
 depthAve_size = 10
 depthMoving_averages = 4
-depthMovingAverages = [DepthMovingAverage(depthAve_size) for _ in range(depthMoving_averages)]
+depthMovingAverages = [
+ [DepthMovingAverage(depthAve_size) for _ in range(depthMoving_averages)],
+ [DepthMovingAverage(depthAve_size) for _ in range(depthMoving_averages)]
+]
 
 # マーカーリストの定義 
 markers = [
@@ -442,6 +486,7 @@ while True:
         
         rvecs2D, tvecs2D, _ = cv2.aruco.estimatePoseSingleMarkers(corners, marker_size, camera_matrix, dist_coeffs)
 
+        drawreMarkerRect(imgDepth,corners,ids)
         cv2.aruco.drawDetectedMarkers(frame, corners, ids)
         for i, rvec in enumerate(rvecs2D):
 
@@ -477,28 +522,38 @@ while True:
             euler_angles = calcEulerAngle(markers[1].T_T3D)
         # オイラー角 (degree単位)
         offsetY = 280
-        offsetX = 200
+        offsetX = 380
+        translation = None
 
         if nRelative == 0:
             markers[0].drawrelativeAxis()
+            # 平行移動（translation vector）の取り出し
+            translation = markers[0].T_T3D[:3, 3]
             cv2.putText(frame, f"Relative #0 euler_angles:",(cameraWidth-offsetX,offsetY), cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,0,0),2)
             cv2.putText(frame, f"Relative #0 euler_angles:",(cameraWidth-offsetX,offsetY), cv2.FONT_HERSHEY_SIMPLEX,0.5,(255,255,255),1)
             print("Relative #0 euler_angles",f"r: {euler_angles[0]:.2f}, p: {euler_angles[1]:.2f}, y: {euler_angles[2]:.2f}")
         elif nRelative == 1:
             markers[1].drawrelativeAxis()
+            # 平行移動（translation vector）の取り出し
+            translation = markers[1].T_T3D[:3, 3]
             cv2.putText(frame, f"Relative #1 euler_angles:",(cameraWidth-offsetX,offsetY), cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,0,0),2)
             cv2.putText(frame, f"Relative #1 euler_angles:",(cameraWidth-offsetX,offsetY), cv2.FONT_HERSHEY_SIMPLEX,0.5,(255,255,255),1)
             print("Relative #1 euler_angles",f"r: {euler_angles[0]:.2f}, p: {euler_angles[1]:.2f}, y: {euler_angles[2]:.2f}")
 
+        cv2.putText(frame,f"Translation x: {translation[0]:.2f},y: {translation[1]:.2f},z: {translation[2]:.2f} mm",(cameraWidth - offsetX, offsetY + 20 ),cv2.FONT_HERSHEY_SIMPLEX,0.5, (0, 0, 0), 2)
+        cv2.putText(frame,f"Translation x: {translation[0]:.2f},y: {translation[1]:.2f},z: {translation[2]:.2f} mm",(cameraWidth - offsetX, offsetY + 20 ),cv2.FONT_HERSHEY_SIMPLEX,0.5, (255, 255, 255), 1)
+
         labels = ["roll", "pitch", "yaw"]
         for i, label in enumerate(labels):
-            cv2.putText(frame,f"{label} {euler_angles[i]:.2f} degree",(cameraWidth - offsetX, offsetY + 20 * (i + 1)),cv2.FONT_HERSHEY_SIMPLEX,0.5, (0, 0, 0), 2)
-            cv2.putText(frame,f"{label} {euler_angles[i]:.2f} degree",(cameraWidth - offsetX, offsetY + 20 * (i + 1)),cv2.FONT_HERSHEY_SIMPLEX,0.5, (255, 255, 255), 1)
+            cv2.putText(frame,f"{label} {euler_angles[i]:.2f} degree",(cameraWidth - offsetX, offsetY + 20 * (i + 2)),cv2.FONT_HERSHEY_SIMPLEX,0.5, (0, 0, 0), 2)
+            cv2.putText(frame,f"{label} {euler_angles[i]:.2f} degree",(cameraWidth - offsetX, offsetY + 20 * (i + 2)),cv2.FONT_HERSHEY_SIMPLEX,0.5, (255, 255, 255), 1)
 
     # 情報を表示
     cv2.putText(frame, "Hit Esc key to terminate, v change calc mode, w toggle Invert, r toggle relative, s show/hide information", (10, cameraHeight-20),cv2.FONT_HERSHEY_SIMPLEX, 0.4, (255, 255, 255), 1)
     # Title表示
     cv2.imshow("Aruco Multi-Marker Detection with SVD", frame)
+    if( not (depth is None) ):
+       cv2.imshow( "aeroTAP camera DepthMap", imgDepth )
 
     # ESCキーで終了
     key = cv2.waitKey(1)

@@ -9,8 +9,12 @@ from scipy.spatial.transform import Rotation
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # cv2.aruco.estimatePoseSingleMarkers() で得られるマーカーコーナー2D座標から、
-# カメラワールド座標3Dを求め、基準４コーナーからの変換行列をSVDで求める
+# カメラワールド座標3Dを求め、3Dコーナー座標から変換行列を求める
 # 3D座標が求められない場合 = コーナーの距離座標が取得てきない場合 = 距離=0 は、無視
+#
+# 法線ベクトル (外積) を使って z 軸を求める
+# 1つ目の点と2つ目の点のベクトル で x 軸を決める
+# y 軸は外積 で求める
 #
 # 重要: 3Dカメラから得られる距離データ(Depth)にはブレが発生するため、移動平均化している
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -61,7 +65,7 @@ def getDepth(corners,depth):
         x, y = point
         pos = int(y*cameraWidth+x)
         if 0 <= pos < depth.size: 
-          nDepth[i] = depth[pos]
+          nDepth[i] = depth[pos];
           if nDepth[i] ==0:
               for j, p in enumerate(nIndex):
 #                  print(f"Index {j} => {nIndex[j]}")
@@ -71,18 +75,10 @@ def getDepth(corners,depth):
               
         else:
           nDepth[i] = 0
-#        print(f"Index {i} => point: ({x},{y}):{depth[pos]}")
+#    print(f"nDepth {nDepth[0]:.0f}, {nDepth[1]:.0f}, {nDepth[2]:.0f}, {nDepth[3]:.0f}")
     return nDepth
 
-# ピクセル座標に変換（プロジェクション後に正規化）
-def normalize_projection(proj):
-    if proj[2] != 0:
-        return proj / proj[2]  # 正規化（x/z, y/z）
-    else:
-        print(f"Warning: Projection {proj.flatten()} has zero denominator")
-        return np.array([0, 0])  # 代替値
-
-""" 4x4 変換行列の逆行列を計算 """
+    """ 4x4 変換行列の逆行列を計算 """
 def invert_transformation_matrix(T):
     R = T[:3, :3]  # 回転行列 (3x3)
     t = T[:3, 3]   # 並進ベクトル (3x1)
@@ -97,6 +93,75 @@ def invert_transformation_matrix(T):
     T_inv[:3, 3] = t_inv
 
     return T_inv
+
+# カメラからマーカーへの方向ベクトルを 3D カメラの座標系で求める
+"""
+    カメラ座標系の4点 (x, y, z) からマーカーの変換行列 (4x4) を求める
+"""
+# marker_corners_3D は (4,3) の配列で、それぞれの点が (x, y, z) で表される。
+# step1. 平面フィッティング (主成分分析: PCA)
+#        マーカーは平面上にあるため、4点の位置から「平面の法線ベクトル」を求め、姿勢を決定。
+#        座標軸の定義
+#       x 軸: 1つ目の点と2つ目の点のベクトル
+#       y 軸: x 軸と法線の外積
+#       z 軸: 法線ベクトル (外積で求める)
+#       変換行列を作成
+# step2 回転行列 (3×3) は x, y, z 軸を並べて作成。
+# step3 並進ベクトル (t) は、マーカーの中心位置。
+
+def compute_transformation_matrix(marker_corners_3D):
+
+    # (4,3) の形状を確認
+    assert marker_corners_3D.shape == (4, 3), "Input shape must be (4,3)"
+    
+    # 1. 中心座標を計算 (マーカーの中心)
+    center = np.mean(marker_corners_3D, axis=0)
+
+    # 2. 基準となるX軸の方向を決定 (1つ目と2つ目の点を使用)
+    x_axis = marker_corners_3D[1] - marker_corners_3D[0]
+    x_axis /= np.linalg.norm(x_axis)  # 正規化
+
+    # 3. 平面の法線ベクトル (z軸) を求める
+    normal = np.cross(marker_corners_3D[2] - marker_corners_3D[0], 
+                      marker_corners_3D[3] - marker_corners_3D[0])
+    normal /= np.linalg.norm(normal)  # 正規化
+
+    # 4. y軸を計算 (z軸とx軸の外積)
+    y_axis = np.cross(normal, x_axis)
+    y_axis /= np.linalg.norm(y_axis)  # 正規化
+
+    # 5. 変換行列を作成
+    R = np.column_stack((x_axis, y_axis, normal))  # 3x3 回転行列
+    T = np.eye(4)  # 4x4 の単位行列
+    T[:3, :3] = R  # 回転部分
+    T[:3, 3] = center  # 平行移動部分
+
+    return T
+
+
+# 鏡映変換（左右反転）を含んでしまう場合 det_R<0
+def adjustTransformationMatrix(T):
+        
+        # 回転行列 (3x3)
+        R = T[:3, :3]
+        # 並進ベクトル (3x1)
+        t = T[:3, 3]
+
+        det_R = np.linalg.det(R)
+        if det_R <0:
+        # 特異値分解 (SVD)
+            U, _, Vt = np.linalg.svd(R)
+        # 修正: det(U @ Vt) < 0 の場合、Vt の最後の行の符号を反転
+            if np.linalg.det(U @ Vt) < 0:
+                 Vt[-1, :] *= -1  # Vt の最後の行を反転
+        # 正しい回転行列を取得
+                 R = U @ Vt
+
+        # 4×4 の変換行列 T を再度作成
+        T = np.eye(4)  # 4×4 の単位行列
+        T[:3, :3] = R  # 直行化した回転行列を適用
+        T[:3,  3] = t  # 元の平行移動ベクトルをセット
+        return T
 
 # 変換行列からオイラー角 (degree単位)を求める
 def calcEulerAngle(T3D):
@@ -128,7 +193,6 @@ def drawreMarkerRect(image,corners,ids):
             cv2.putText(image, f"ID {ids[i][0]}", tuple(center), cv2.FONT_HERSHEY_SIMPLEX,
                 0.5, (0, 0, 255), 2, cv2.LINE_AA)
 
-
 # マーカーclass
 class Marker:
 
@@ -140,7 +204,14 @@ class Marker:
     corners = None
     rvec2D = None
     tvec2D = None
-    marker_corners_2D = None
+# コーナーの2D座標
+    marker_corners_2D = np.array([
+        [0,0,0],
+        [0,0,0],
+        [0,0,0],
+        [0,0,0]
+    ], dtype=np.int32)
+# コーナーの3D座標
     marker_corners_3D = np.array([
         [0,0,0],
         [0,0,0],
@@ -148,12 +219,14 @@ class Marker:
         [0,0,0]
     ], dtype=np.float32)
     center_marker = None
-    center_marker3D = None
+#    center_marker3D = None
+
     rvec3D = None
     T3D = None
     T_T3D = None
     R3D = None
     t = None
+    # コーナーの距離
     cornerDepth = np.array([0,0,0,0])
     euler_angles = None
 
@@ -170,83 +243,60 @@ class Marker:
         self.tvec2D = tvecs2D[i]
 
         # 回転ベクトルを回転行列に変換
-        R, _ = cv2.Rodrigues(rvec)
+        R, _ = cv2.Rodrigues(rvecs2D[i])
 
-        # マーカーの座標系を描画 aruco 姿勢
-        if nViewMode ==1:
-            cv2.drawFrameAxes(frame, camera_matrix, dist_coeffs, rvec, self.tvec2D, 0.03)
-
-    #        print("cornsers: ", corners) 
-        self.marker_corners_2D = corners[i].reshape(4, 2) 
-        self.center_marker = np.mean(self.marker_corners_2D, axis=1)
-    #        print("center_marker: ", center_marker) 
-        #マーカー位置の距離 
+        # corners[0] の 4 点の座標 (2D)
+        self.marker_corners_2D = corners[i].reshape(4, 2)  # (4,2) の形に変換
+        # corners[0] の 4 点の距離(Z)
         self.cornerDepth = getDepthAve(i,self.marker_corners_2D,depth)
+#        print(f"#{i}, cornerDepth {self.cornerDepth[0]:.1f}, {self.cornerDepth[1]:.1f}, {self.cornerDepth[2]:.1f},{self.cornerDepth[3]:.1f} ")
+
         # 距離が取得出来ていない場合
         if np.any(self.cornerDepth <= 0):
             return False, None, None
 
-    #        point3D = np.zeros(3, dtype=np.float32)
+        # if Depth includes any valid 
+        # if np.any(self.cornerDepth <= 0) or nViewMode ==1:
+        #     if nViewMode ==0:
+        #        cv2.putText(frame, "Invalid corners depth value!", (10, 38),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+        #     if nViewMode ==1:
+        #          cv2.putText(frame, f"aruco:", (8, 18),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 2)
+
         #マーカーコーナー位置を3D座標に変換 
         # arucoの座標系に合わせるためにx軸の符号を反転？
-        corners_array = corners[i]
-        for j, point in enumerate(corners_array[0]):
+        for i, point in enumerate(self.marker_corners_2D):
             x,y = point
             point3D = np.array([
-            -(x - camera_center[0]) * self.cornerDepth[j] / nFocalLength[0],
-            (y - camera_center[1]) * self.cornerDepth[j] / nFocalLength[1],
-            self.cornerDepth[j]
+            -(x - camera_center[0]) * self.cornerDepth[i] / nFocalLength[0],
+            (y - camera_center[1]) * self.cornerDepth[i] / nFocalLength[1],            
+            self.cornerDepth[i]
             ], dtype=np.float32)
-            self.marker_corners_3D[j]  = point3D            
+            # print(f"#{i} 3Dx {point3D[0]:.1f} = ({x}-{camera_center[0]}) * {self.cornerDepth[i] } / {nFocalLength[0]:.1f} ")
+            # print(f"#{i} 3Dy {point3D[1]:.1f} = ({y}-{camera_center[1]}) * {self.cornerDepth[i] } / {nFocalLength[1]:.1f} ")
+            self.marker_corners_3D[i]  = point3D
 
         # マーカーの中心座標を計算
         self.center_marker3D = np.mean(self.marker_corners_3D, axis=0)
 
-        # 座標系を中心からの相対的な位置に変換
-        P1 = self.marker_corners_3D - self.center_marker3D  # マーカーの相対座標系
-        P2 = base_3D_corners - center_base  # 基準座標系の相対座標系
+        # カメラからマーカーへの方向ベクトルを 3D カメラの座標系で求め、新しい回転行列を得る
+        self.T3D = compute_transformation_matrix(self.marker_corners_3D)
 
-        # 3. SVDを使用して回転行列を求める
-        # H 行列を計算 (P2.T * P1)
-        H = np.dot(P2.T, P1)
-
-        # SVDを適用
-        U, S, Vt = np.linalg.svd(H)
-
-        # 回転行列 R の計算
-        self.R3D = np.dot(Vt.T, U.T)
-        # 行列式をチェックして反射行列でないか確認
-        det_R = np.linalg.det(self.R3D)
-    #       print("行列式 det(R):", det_R)
-
-        # もし行列式が -1 なら、反射行列なので修正します
-        if det_R < 0:
-            Vt[-1, :] *= -1
-            self.R3D = np.dot(Vt.T, U.T)
-
-        # 並進ベクトルを計算
-        self.t = self.center_marker3D - R @ center_base
-
-        # マーカーの中心座標を計算
-        self.center_marker3D = np.mean(self.marker_corners_3D, axis=0)
-
-        # 4×4 の同次変換行列を作成
-        self.T3D = np.eye(4)  # 単位行列 (4×4)
-        self.T3D[:3, :3] = self.R3D  # 左上に R を配置
-        self.T3D[:3, 3] = self.t   # 並進ベクトル t を配置
-
-         # マーカーらからの変換行列
+        # マーカーらからの変換行列
         if nInvertMode ==1:
            self.T3D = invert_transformation_matrix(self.T3D)
 
+        # 4x4 変換行列から回転行列（R）と並進ベクトル（t）の取得
+        # 回転行列 (3x3)
+        self.R3D = self.T3D[:3, :3]
+        # 並進ベクトル (3x1)
+        self.t = self.T3D[:3, 3]
         self.rvec3D, _ = cv2.Rodrigues(self.R3D)  # 3x3 → 3x1 の回転ベクトル
 
-        # 回転ベクトルからオイラー角（roll, pitch, yaw）に変換 (ZYX順)
-        rotation = Rotation.from_rotvec(self.rvec3D.flatten()) 
-        self.euler_angles = rotation.as_euler('zyx', degrees=True)  # ZYX順のオイラー角 (degree単位)
+        # 回転行列 R からオイラー角（roll, pitch, yaw）を取得
+        rot = Rotation.from_matrix(self.R3D)  # Rotation オブジェクトを作成
+        self.euler_angles = rot.as_euler('xyz', degrees=True)  # XYZ順のオイラー角（度）
 
         self.isValid = True
-
         return True, self.R3D,self.t
 
     # 自身からmatrixへの相対変換
@@ -261,7 +311,7 @@ class Marker:
             return
 
         offsetY = self.marker_id * 180
-        # マーカーの座標系を描画 aeroTAP姿勢
+        # マーカーの座標系を描画
         if nViewMode ==0 and nShowAxis:
             cv2.drawFrameAxes(frame, camera_matrix, dist_coeffs, self.rvec3D, self.tvec2D, 0.03)
 
@@ -303,7 +353,6 @@ class Marker:
         # マーカー位置に相対座標系を描画
         cv2.drawFrameAxes(frame, camera_matrix, dist_coeffs, rvec, self.tvec2D, 0.03)
 
-
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # メイン処理
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -312,12 +361,12 @@ cameraWidth = 1280
 cameraHeight = 720
 # カメラ内部を90として、30FPSで処理するには  nFPS = 190 とする
 nFPS = 30
-# Arucoマーカーの辞書を定義 (DICT_4X4_50 など他の辞書も使用可)
+# ArUcoマーカーの辞書を定義 (DICT_4X4_50 など他の辞書も使用可)
 marker_size = 0.05  # 5cmのマーカーと仮定
 aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_50)
 aruco_params = cv2.aruco.DetectorParameters()
 
-# aeroTAP カメラを起動
+# カメラを起動
 if not aerotap.getCamModeAndType():
      raise ValueError("Camera detection Error")
 # カメラがUSB3.0接続されていることを確認
@@ -325,7 +374,7 @@ nIsUSB30 = aerotap.IsUSB30()
 if nIsUSB30 ==1:
      raise ValueError("Camera is connected with USB2.0 mode, Please check the cable and connection")
 
-# Initialize camera check
+# Initialize camera 
 if not aerotap.Init(0,nFPS,aerotap.camMode):
      raise ValueError("Error aeroInit")
    
@@ -336,33 +385,31 @@ if not aerotap.StartCam(cameraWidth,cameraHeight):
 print("Starting camera...type 'Esc' to terminate.")      
 
 nFocalLength = np.array(
-        [590.00,590.00]
+        [586.0000,586.0000]
     , dtype=np.float32)
 
 nFocalLength[0], nFocalLength[1] = aerotap.GetFocalLength(0)
-print(f"Focal Length: w={nFocalLength[0]:.3f}, h={nFocalLength[1]:.3f}")
+print(f"Focal Length: w={nFocalLength[0]}, h={nFocalLength[1]}")
 
 # カメラ中心位置
 camera_center = (cameraWidth/2, cameraHeight / 2)
-
-point3D = np.array([0,0,0], dtype=np.float32)
-
-# 基準座標系の4つの対応する点（仮に設定）
-# 基準座標系の対応点も同様に指定します ( 5cm x 5cm 50cm distance )
-base_3D_corners = np.array([
-    [-50, -50, 500],  # 左上
-    [50, -50, 500],  # 右上
-    [50, 50, 500],  # 右下
-    [-50, 50, 500]   # 左下
-], dtype=np.float32)
-
-# マーカーの中心座標を計算
-center_base = np.mean(base_3D_corners, axis=0)
 
 camera_matrix = np.array([[1000, 0, 640], 
                           [0, 1000, 360], 
                           [0, 0, 1]], dtype=np.float32) 
 dist_coeffs = np.zeros((4, 1))  # 歪み係数（例）
+
+point3D = np.array([0,0,0], dtype=np.float32)
+
+# 基準座標系の4つの対応する点（仮に設定）
+# 基準座標系の対応点も同様に指定します ( 5cm x 5cm 50cm distance )
+# カメラとアーム先端のオフセットとして利用可能?
+base_3D_corners = np.array([
+    [-50, -50, 0],  # 左上
+    [50, -50, 0],  # 右上
+    [50, 50, 0],  # 右下
+    [-50, 50, 0]   # 左下
+], dtype=np.float32)
 
 # === 4つのDepth移動平均を管理 ===
 depthAve_size = 10
@@ -371,6 +418,14 @@ depthMovingAverages = [
  [DepthMovingAverage(depthAve_size) for _ in range(depthMoving_averages)],
  [DepthMovingAverage(depthAve_size) for _ in range(depthMoving_averages)]
 ]
+# マーカーリストの定義 
+markers = [
+    Marker(),
+    Marker()
+]
+
+# マーカーの中心座標を計算(カメラの中心位置)
+center_base = np.mean(base_3D_corners, axis=0)
 
 # nViewMode with aeroTAP or aruco
 nViewMode =0
@@ -381,11 +436,6 @@ nRelative =0
 # nShowInfo Show/Hide information
 nShowInfo =1
 
-# マーカーリストの定義 
-markers = [
-    Marker(),
-    Marker()
-]
 # claheライブラリ準備
 clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
 
@@ -398,16 +448,13 @@ while True:
     # convert depth map to bgr ColorImage
     if( not (depth is None) ):
        imgDepth = aerotap.DepthToRGB(depth)
-       cv2.imshow( "aeroTAP camera DepthMap", imgDepth )
-
-    aerotap.UpdateFrame()
+    # clage 返還後のグレー画像の確認用
+#       cv2.imshow( "aeroTAP camera DepthMap", imgDepth )
 
     # グレースケールに変換
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    # CLAHEで前処理
+   # CLAHEで前処理
     gray = clahe.apply(gray)
-    # clage 返還後のグレー画像の確認用
-#    cv2.imshow( "aeroTAP clahe", gray )
 
     # マーカーを検出
     detector = cv2.aruco.ArucoDetector(aruco_dict, aruco_params)
@@ -417,17 +464,20 @@ while True:
     markers[0].isValid = markers[1].isValid = False
     # マーカーが見つかった場合
     if ids is not None:
-
-        drawreMarkerRect(imgDepth,corners,ids)
-
-        # すべての見つかったマーカー枠、マーカーID 描画
-        cv2.aruco.drawDetectedMarkers(frame, corners, ids)
+        
         rvecs2D, tvecs2D, _ = cv2.aruco.estimatePoseSingleMarkers(corners, marker_size, camera_matrix, dist_coeffs)
 
-        # マーカー毎にMaker classを構成
+        cv2.aruco.drawDetectedMarkers(frame, corners, ids)
+        drawreMarkerRect(imgDepth,corners,ids)
+
         for i, rvec in enumerate(rvecs2D):
+
+            # マーカーの座標系を描画
+            if nViewMode ==1:
+               cv2.drawFrameAxes(frame, camera_matrix, dist_coeffs, rvec, tvecs2D[i],0.03)
+
             marker_id = int(ids[i][0])
-            # Valid Maker ID?  should be 0 or 1
+            # Valid Maker ID?
             if marker_id >1:
               continue
             if i >2:
@@ -452,9 +502,8 @@ while True:
             euler_angles = calcEulerAngle(markers[0].T_T3D)
         else:
             euler_angles = calcEulerAngle(markers[1].T_T3D)
-
-        # オイラー角情報の表示 (degree単位)
-        offsetY = 240
+        # オイラー角 (degree単位)
+        offsetY = 280
         offsetX = 380
         translation = None
 
@@ -467,27 +516,28 @@ while True:
             print("Relative #0 euler_angles",f"r: {euler_angles[0]:.2f}, p: {euler_angles[1]:.2f}, y: {euler_angles[2]:.2f}")
         elif nRelative == 1:
             markers[1].drawrelativeAxis()
+
             # 平行移動（translation vector）の取り出し
             translation = markers[1].T_T3D[:3, 3]
             cv2.putText(frame, f"Relative #1 euler_angles:",(cameraWidth-offsetX,offsetY), cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,0,0),2)
             cv2.putText(frame, f"Relative #1 euler_angles:",(cameraWidth-offsetX,offsetY), cv2.FONT_HERSHEY_SIMPLEX,0.5,(255,255,255),1)
             print("Relative #1 euler_angles",f"r: {euler_angles[0]:.2f}, p: {euler_angles[1]:.2f}, y: {euler_angles[2]:.2f}")
 
+
         cv2.putText(frame,f"Translation x: {translation[0]:.2f},y: {translation[1]:.2f},z: {translation[2]:.2f} mm",(cameraWidth - offsetX, offsetY + 20 ),cv2.FONT_HERSHEY_SIMPLEX,0.5, (0, 0, 0), 2)
         cv2.putText(frame,f"Translation x: {translation[0]:.2f},y: {translation[1]:.2f},z: {translation[2]:.2f} mm",(cameraWidth - offsetX, offsetY + 20 ),cv2.FONT_HERSHEY_SIMPLEX,0.5, (255, 255, 255), 1)
-
         labels = ["roll", "pitch", "yaw"]
         for i, label in enumerate(labels):
             cv2.putText(frame,f"{label} {euler_angles[i]:.2f} degree",(cameraWidth - offsetX, offsetY + 20 * (i + 2)),cv2.FONT_HERSHEY_SIMPLEX,0.5, (0, 0, 0), 2)
             cv2.putText(frame,f"{label} {euler_angles[i]:.2f} degree",(cameraWidth - offsetX, offsetY + 20 * (i + 2)),cv2.FONT_HERSHEY_SIMPLEX,0.5, (255, 255, 255), 1)
 
-
     # 情報を表示
     cv2.putText(frame, "Hit Esc key to terminate, v change calc mode, w toggle Invert, r toggle relative, s show/hide information", (10, cameraHeight-20),cv2.FONT_HERSHEY_SIMPLEX, 0.4, (255, 255, 255), 1)
-     # Title表示
-    cv2.imshow("Aruco Multi-Marker Detection with 3D", frame)
-    if( not (depth is None) ):
-       cv2.imshow( "aeroTAP camera DepthMap", imgDepth )
+    # Title表示
+    cv2.imshow("Aruco Multi-Marker Detection with SVD", frame)
+
+    # Depth表示
+    cv2.imshow("Depth", imgDepth)
 
     # ESCキーで終了
     key = cv2.waitKey(1)
