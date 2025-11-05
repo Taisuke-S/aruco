@@ -96,3 +96,6 @@ ZDColorPalette.py              aerotap.py　補足py depthmapのカラーLookup�
      added drawreMarkerRect() to draw marker rect in Depth Map image
 2.4  マーカーのDepth計算を移動平均で求めていたが、マーカー毎の移動平均ではなく、2つのマーカーの移動平均になっていた問題
      マーカー間の平行移動(Translation)の表示
+2.5  aerotap.pyの修正
+     aeroTAP 3D USB G2カメラで距離情報が正しくない問題の対応
+     14bit時に正しくない、11bitで取得するよう変更

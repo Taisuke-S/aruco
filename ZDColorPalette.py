@@ -12,8 +12,8 @@ __version__ = "1.0"
 
 import numpy as np
 
-ColorPalette = np.zeros((16384,3), dtype=np.uint16)
-ColorPaletteValue = np.zeros((16384, 3), dtype=np.uint8)
+ColorPalette = np.zeros((16384,4), dtype=np.uint8)
+ColorPaletteValue = np.zeros((16384), dtype=np.uint32)
 fCV = 180
 nCenter = 1500
 r1 = 0.35
@@ -87,6 +87,7 @@ def BuildColorPalette():
       ColorPalette[i][0] = B
       ColorPalette[i][1] = G
       ColorPalette[i][2] = R
+      ColorPalette[i][3] = 255
 
     return ColorPalette
 
@@ -102,6 +103,6 @@ def BuildColorPaletteValue():
           fy = fCV + pow(fx, r2)*(256 - fCV)
 
       HSV_to_RGB(fy, 1.0, 1.0)
-      ColorPaletteValue[i] =  [R, G, B]
+      ColorPaletteValue[i] = B*65536+G*256+R
 
     return ColorPaletteValue

@@ -99,3 +99,5 @@ ZDColorPalette.py              aerotap.py　Supplementary: A library for generat
      added drawreMarkerRect() to draw marker rect in Depth Map image
 2.4  fixed issue with getDepthAve calculating incorrect depth average
      added to show transaltion between markers
+2.5  Fixed incorrect depth value with aeroTAP 3D USB G2 camera
+     use camMode =11 rather than camMode =12 to correct

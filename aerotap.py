@@ -3,13 +3,19 @@
 Python library for aeroTAP 3D USB Camera
 
 Created on Tue May  9 23:24:01 2023
+Modified on Oct 30, 2025
+  - Fixed incorrent depth value with aeroTAP 3D USB G2 camera
+    use camMode =11 rather than camMode =12 to correct
+  - Modified code to meet NumPy 2.1 compatible
+  - Added G1 camera support
+
 @author: nextEDGE Technology
 
 """
 __author__ = "nextEDGE Technology"
 __copyright__ = "Copyright (C) 2023,2025 nextEDGE Technology K.K."
 __license__ = "Public Domain"
-__version__ = "1.4"
+__version__ = "1.5"
 
 import os
 import sys
@@ -227,8 +233,6 @@ def SetResolution(width,height):
 
     camWidth= width
     camHeight = height
-    LoadZDTable()
-    print("Set Resolution", camWidth, camHeight,zdTableLen)
     if not os.name == "nt":
         return True
         
@@ -236,6 +240,10 @@ def SetResolution(width,height):
     lib.AERO_SetResolution.argtypes = [ctypes.wintypes.UINT,ctypes.wintypes.UINT,ctypes.wintypes.UINT]
     if not lib.AERO_SetResolution(camID,width,height):
         return False
+
+    LoadZDTable()
+    print("Set Resolution", camWidth, camHeight,zdTableLen)
+
     return True
 
 """
@@ -256,8 +264,10 @@ def LoadZDTable():
         zdTable.clear()
         for i in range( zdTableLen):
             zdTable.append(buffer[i])
-#    print("zdTableLen = {}",format(zdTableLen))
+        print("zdTableLen = ",zdTableLen)
 #    print(zdTable)
+        zdTable = [0 if x >= 16384 else x for x in zdTable]
+
         return zdTableLen
 
     # Linux
@@ -427,7 +437,8 @@ def Read(mode):
    # 画像データを NumPy 配列に変換
             deserialized_resized = np.frombuffer(img_buffer[pixel_offset:pixel_offset + img_size], dtype=np.uint8)
     # 画像データを (Height, Width, 3) にリシェイプ
-            deserialized = np.reshape(deserialized_resized, newshape=(cBMIH.biHeight, cBMIH.biWidth, 3))
+#            deserialized = np.reshape(deserialized_resized, newshape=(cBMIH.biHeight, cBMIH.biWidth, 3))
+            deserialized = np.reshape(deserialized_resized, (cBMIH.biHeight, cBMIH.biWidth, 3))
 
         # BMPの画像データは上下反転しているので修正
             deserialized = np.flipud(deserialized)
@@ -539,16 +550,31 @@ def ReadDepth():
 #    typedef BOOL (__cdecl *AERO_GetImage)(BITMAPINFOHEADER * pBuffer,int nType,int *nMax/*=NULL*/, int *nTotal/*=NULL*/,int *nCount/*=NULL*/, int *nFrame/*=NULL*/, int *nP/*=NULL*/, int *nBlackout/*=NULL*/);
 #    if not lib.AERO_GetImage(depth_buffer.ctypes.data_as(ctypes.POINTER(ctypes.c_uint8)),9,None,None,None,None,None,None):
     lib.AERO_GetImageDataEx.argtypes = [ctypes.wintypes.INT,ctypes.POINTER(ctypes.c_uint8),ctypes.wintypes.INT]
-    mode = 8
-    # set mode = 9 for RAW if camMode != 12 
-    if camMode !=12:
-      mode =9
+    mode = 8  # RAW data
+    # set mode = 9 for Filtered or 14bit RAW 
+    if bEnableDepthFilter:
+        mode =9
+
     if not lib.AERO_GetImageDataEx(camID,depth_buffer.ctypes.data_as(ctypes.POINTER(ctypes.c_uint8)),mode):
         print("GetDepthImage Error")
         return None
  
-    depth16 = np.frombuffer(depth_buffer[0:camWidth*camHeight*2],dtype=np.uint16)
-
+    if camMode ==12:
+        depth16 = np.frombuffer(depth_buffer[0:camWidth*camHeight*2],dtype=np.uint16)
+    elif camMode == 10 or bEnableDepthFilter:
+        if bEnableDepthFilter:
+            depth16 = np.frombuffer(depth_buffer[0:camWidth*camHeight*2],dtype=np.uint16)
+        else:
+            depth8 = np.frombuffer(depth_buffer[0:camWidth*camHeight], dtype=np.uint8)
+            # 8bitの index を zdTable で 16bit化
+            # index >= zdTableLen → 9999
+            over = depth8 >= zdTableLen
+            depth16 = np.where(over, 9999, np.take(zdTable, depth8, mode='clip'))
+    else:
+        # index がテーブル範囲外 → 9999
+        depth16 = np.frombuffer(depth_buffer[0:camWidth*camHeight*2],dtype=np.uint16)
+        over = depth16 >= zdTableLen
+        depth16 = np.where(over, 9999, np.take(zdTable, depth16, mode='clip'))
     return depth16
 
 
@@ -558,10 +584,17 @@ def DepthToRGB(depth):
     returns color image in np dmin=3  BGR
 """
 def DepthToRGB(depth):
-    global lib,camID ,os, imgDepth,depth_buffer,camWidth,camHeight,bEnableDepthFilter ,camMode,ColorPalette 
+    global lib,camID ,os, imgDepth,depth_buffer,camWidth,camHeight,bEnableDepthFilter ,camMode,ColorPalette
+#    For Safe
+#    depth_clipped = np.clip(depth, 0, len(ColorPalette) - 1)
+#    rgb_image = ColorPalette[depth_clipped]
 
+#   For Fast
     rgb_image = ColorPalette[depth]
-    rgb_image = rgb_image.reshape((camHeight, camWidth, 3))
+
+    rgb_image = rgb_image.reshape((camHeight, camWidth, 4))[:, :, :3]
+    return rgb_image.astype(np.uint8)
+
     return rgb_image
     
     
@@ -590,9 +623,9 @@ if os.name == "nt":
     cwd = os.path.dirname(__file__)
     os.environ['PATH'] = cwd + ';' + os.environ['PATH']
     # load basic version
-#    aerodll = os.path.join(cwd, "aeroTAP_CAM.dll")
+    aerodll = os.path.join(cwd, "aeroTAP_CAM.dll")
     # load OpenMP enabled version
-    aerodll = os.path.join(cwd, "aeroTAP_CAMMP.dll")
+#    aerodll = os.path.join(cwd, "aeroTAP_CAMMP.dll")
     envKeys = list()
     for k, v in os.environ.items():
         envKeys.append(k)
@@ -642,11 +675,11 @@ cHandResult = HandResult()
 img_buffer = np.empty(1280*720*3+BMlen,dtype=np.uint8)
 depth_buffer = np.empty(1280*720*2,dtype=np.uint8)
 
-ColorPalette = ZDColorPalette.BuildColorPaletteValue()
+ColorPalette = ZDColorPalette.BuildColorPalette()
 
 # setup
 def getCamModeAndType():
-    global os,nPType,camMode,nIsUSB30,bEnableMJPEG
+    global os,nPType,camMode,nIsUSB30,bEnableMJPEG,camWidth,camHeight
 
     nPType = GetPType()
     if nPType ==8: 
@@ -659,16 +692,19 @@ def getCamModeAndType():
      # always eable HE Postprocess
      EnableHWPostProcess(bEnableHWPostProcess)
     elif nPType ==3:
-     camMode = 12 # 14Bit
+     camMode = 11 # 14Bit
      print("Running aeroTAP 3D USB G2 Camera")
      # always eable HE Postprocess
      EnableHWPostProcess(bEnableHWPostProcess)
     elif nPType ==0:
      print("Running aeroTAP 3D USB G1 Camera")
+     camMode = 10 # 8Bit
+     if camWidth==1280:
+        camWidth = 640
+        camHeight = 480
     elif nPType ==1:
      camMode = 12 # 14Bit
      print("Running aeroTAP 3D USB GS Camera")
-
     if os.name == "nt":
        if not IsConnected():
             raise ValueError("Error aeroTAP camera is not connected")
@@ -724,7 +760,7 @@ if __name__ == "__main__":
 #          depth = ReadDepth()
           UpdateFrame()
           print("width = ",cBMIH.biWidth," height= ",cBMIH.biHeight ," imageSize = ", cBMIH.biSizeImage)
-          break;
+          break
       time.sleep(1)
 # Loop Start          
    while(1):
@@ -746,8 +782,8 @@ if __name__ == "__main__":
               break
       else:
           if GetLastError()!=0:
-            print("Lost connection\n");
-            break;
+            print("Lost connection\n")
+            break
           print("no frame")
 #          continue
 
